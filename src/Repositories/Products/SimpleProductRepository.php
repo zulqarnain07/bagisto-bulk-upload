@@ -308,6 +308,15 @@ class SimpleProductRepository extends Repository
                         $attributeOption = $this->attributeOptionRepository->findOneByField(['admin_name' => $csvData[$searchIndex]]);
 
                         array_push($attributeValue, $attributeOption['id']);
+                    } else if ($value['type'] == "multiselect") {
+                        $mselect_array = array();
+                        $multiselect = explode(',',$csvData[$searchIndex]);
+                        foreach ($multiselect as $k => $v)
+                        {
+                            $attributeOption = $this->attributeOptionRepository->findOneByField(['admin_name' => $v]);
+                            array_push($mselect_array,$attributeOption['id']);
+                        }
+                        array_push($attributeValue, $mselect_array);
                     } else if ($value['type'] == "checkbox") {
                         $attributeOption = $this->attributeOptionRepository->findOneByField(['attribute_id' => $value['id'], 'admin_name' => $csvData[$searchIndex]]);
 
